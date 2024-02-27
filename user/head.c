@@ -36,7 +36,7 @@ coinflip()
   printf("⣿⣿⣿⣿⡀⣀⣠⣴⣿⣿⣿⠁⣶⣿⣿⣿⠿⠛⣡⡋⠹⣿⣿⣿⣿⣿⣿⣿⣿\n");
   printf("⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣭⣥⣤⣶⣾⣿⣿⠀⣿⣿⣿⣿⣿⣿⣿⣿\n\n\n\n\n");
   sleep(10);
-
+  
   if (result < 4) {
     printf(" /$$                                 /$$           /$$\n");
     printf("| $$                                | $$          | $$\n");
@@ -68,7 +68,7 @@ coinflip()
   printf("  |__/    |__/  |__/\n");
   printf("                    \n");
   printf("                    \n\n\n\n\n");
-  printf("Oops! Looks like the coin got stuck in a quantum loop between heads and tails. Let's try flipping again and hope the universe makes up its mind this time! 🪙🤷‍♂️🪙\n");
+  printf("Oops! Looks like the coin got stuck in a quantum loop between heads and tails. Let's try flipping again and hope the universe makes up its mind this time! 🪙 <200d>♂️🪙\n");
   return 0;
 }
 
@@ -79,6 +79,7 @@ int main(int argc, char *argv[]) {
     int flip = 0;
     int counter = -1; //number of bytes or lines
 
+    //check for flags
     for(int i=1; i < argc; i++) {
       if(strcmp(argv[i], "-c") == 0) {
         if(i + 1 < argc) {
@@ -131,6 +132,7 @@ int main(int argc, char *argv[]) {
       }
     }
 
+    //default number of lines
     if(counter == -1) {
       counter = 10;
     }
@@ -142,7 +144,7 @@ int main(int argc, char *argv[]) {
             return 0;
         }
     }
-
+    
     for(int i=1; i < argc; i++) {
       int fd = open(argv[i], O_RDONLY);
 
@@ -154,7 +156,7 @@ int main(int argc, char *argv[]) {
           printf("==> %s <==\n", argv[i]);
         }
 
-        if(num == 1 && counter > 0) {
+        if(num == 1 && counter > 0) { //for lines
           for(int i=0; i < counter; i++) {
             if(getline(&buf, &sz, fd) <= 0) {
               break;
@@ -162,7 +164,7 @@ int main(int argc, char *argv[]) {
 
             printf("%s", buf);
           }
-        } else if(counter > 0) {
+        } else if(counter > 0) { //for bytes
           int bytes = 0;
 
           while(counter > 0) {
@@ -183,9 +185,9 @@ int main(int argc, char *argv[]) {
           printf("\n");
         }
 
-        free(buf);
+        free(buf);//free buffer
 
-        break;
+        break;//end after reading one file
       } else {
         if(strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "-n") == 0) {
           i = i + 1;
@@ -200,4 +202,3 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
