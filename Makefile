@@ -116,9 +116,8 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 .PRECIOUS: %.o
 
 UPROGS=\
-	$U/_coinflip\
-  	$U/_tail\
-  	$U/_head\
+ 	$U/_tail\
+  $U/_head\
 	$U/_cat\
 	$U/_echo\
 	$U/_forktest\
