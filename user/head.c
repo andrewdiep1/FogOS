@@ -68,7 +68,7 @@ coinflip()
   printf("  |__/    |__/  |__/\n");
   printf("                    \n");
   printf("                    \n\n\n\n\n");
-  printf("Oops! Looks like the coin got stuck in a quantum loop between heads and tails. Let's try flipping again and hope the universe makes up its mind this time! 🪙 <200d>♂️🪙\n");
+  printf("Oops! Looks like the coin got stuck in a quantum loop between heads and tails. Let's try flipping again and hope the universe makes up its mind this time!\n");
   return 0;
 }
 
