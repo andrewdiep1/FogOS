@@ -89,3 +89,13 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// print timestamp
+uint64
+sys_timeframe(void)
+{
+  uint64 *timestamp = (uint64 *) GOLDFISH;
+  uint64 seconds = *timestamp / 1000000000;
+
+  return *timestamp;
+}
