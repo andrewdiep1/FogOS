@@ -135,8 +135,8 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 
-fs.img: mkfs/mkfs README.md totem.txt $(UPROGS)
-	mkfs/mkfs fs.img README.md totem.txt $(UPROGS)
+fs.img: mkfs/mkfs README.md headtail-test\17800char.txt headtail-test\binary.bin headtail-test\empty.txt headtail-test\over9000lines.txt headtail-test\small.txt headtail-test\special_chars.txt headtail-test\totem.txt headtail-test\utf8_encoded.txt $(UPROGS)
+	mkfs/mkfs fs.img README.md headtail-test\17800char.txt headtail-test\binary.bin headtail-test\empty.txt headtail-test\over9000lines.txt headtail-test\small.txt headtail-test\special_chars.txt headtail-test\totem.txt headtail-test\utf8_encoded.txt $(UPROGS)
 
 -include kernel/*.d user/*.d
 
