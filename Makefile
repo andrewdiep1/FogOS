@@ -117,7 +117,7 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 
 UPROGS=\
  	$U/_tail\
-  $U/_head\
+  	$U/_head\
 	$U/_cat\
 	$U/_echo\
 	$U/_forktest\
@@ -135,8 +135,8 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 
-fs.img: mkfs/mkfs README.md headtail-test\17800char.txt headtail-test\binary.bin headtail-test\empty.txt headtail-test\over9000lines.txt headtail-test\small.txt headtail-test\special_chars.txt headtail-test\totem.txt headtail-test\utf8_encoded.txt $(UPROGS)
-	mkfs/mkfs fs.img README.md headtail-test\17800char.txt headtail-test\binary.bin headtail-test\empty.txt headtail-test\over9000lines.txt headtail-test\small.txt headtail-test\special_chars.txt headtail-test\totem.txt headtail-test\utf8_encoded.txt $(UPROGS)
+fs.img: mkfs/mkfs README.md 17800char.txt binary.bin empty.txt over9000lines.txt small.txt special_chars.txt totem.txt utf8_encoded.txt $(UPROGS)
+	mkfs/mkfs fs.img README.md 17800char.txt binary.bin empty.txt over9000lines.txt small.txt special_chars.txt totem.txt utf8_encoded.txt $(UPROGS)
 
 -include kernel/*.d user/*.d
 

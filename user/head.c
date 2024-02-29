@@ -188,10 +188,9 @@ int main(int argc, char *argv[]) {
               printf("%c", buf[i]);
             }
           }
-
-          printf("\n");
         }
 
+        printf("\n");
         free(buf);//free buffer
 
         break;//end after reading one file

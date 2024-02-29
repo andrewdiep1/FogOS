@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
           int lineCount = 0;
           int byteCount = 0;
           int bytesRead = 0;
-          while (lineCount < 1000) {
+          while (lineCount < 1000 && byteCount < 10000) {
               bytesRead = getline(&buf, &sz, fd);
               if (bytesRead <= 0) {
                   break;
