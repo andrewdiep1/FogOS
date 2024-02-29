@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
               printf("%s", line);
           }
           printf("\n");
-          break;
+          return 0;
       } else {
         if(strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "-n") == 0) {
           i = i + 1;
@@ -215,6 +215,8 @@ int main(int argc, char *argv[]) {
         }
       }
     }
+
+    printf("ERROR: No valid files in any of the arguments.\n");
   } else {
     printf("ERROR: Need arguments\n");
   }

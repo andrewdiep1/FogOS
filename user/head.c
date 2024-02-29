@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         free(buf);//free buffer
 
-        break;//end after reading one file
+        return 0;//exit after reading one file
       } else {
         if(strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "-n") == 0) {
           i = i + 1;
@@ -202,6 +202,8 @@ int main(int argc, char *argv[]) {
         }
       }
     }
+
+    printf("ERROR: No valid files in any of the arguments.\n");
   } else {
     printf("ERROR: Need arguments\n");
   }
