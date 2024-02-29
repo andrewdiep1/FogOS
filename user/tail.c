@@ -8,8 +8,6 @@ coinflip()
 {
   uint64 result = (timeframe() / 1000) % 10;
 
-  // printf("coin flip result: %d\n\n\n", result); // testing
-
   printf("⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n");
   printf("⣿⣿⣿⣿⣿⡿⢿⣿⣿⣿⣟⣛⣛⣛⣉⣉⣛⠛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n");
   printf("⣿⣿⣿⣟⡵⠞⠉⠀⢈⣿⣿⣿⠿⠟⠛⠛⠛⠻⡆⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿\n");
@@ -80,7 +78,15 @@ int main(int argc, char *argv[]) {
     int counter = -1; //number of bytes or lines
 
     for(int i=1; i < argc; i++) {
-      if(strcmp(argv[i], "-c") == 0) {
+      if(strcmp(argv[i], "-h") == 0) {
+        printf("Calling tail returns the last 10 lines of the first file found in the input arguments. Adding flags as arguments will modify the output.\n\n");
+        printf("\tFlags:\n");
+        printf("\t\t-n [num]\tInstead of returning the last 10 lines, return the last num amount of lines. This flag must have a number after it (max 1,000).\n\n");
+        printf("\t\t-c [num]\tReturns the last num amount of bytes. This flag must have a number after it (max 10,000).\n\n");
+        printf("\t\t-v\t\tDisplays the file name before displaying all the lines or bytes.\n\n");
+        printf("\t\t-f\t\tFlips a coin that determines whether or not tail will work or not. There is 40% chance for tail to work properly.\n");
+        return 0;
+      } else if(strcmp(argv[i], "-c") == 0) {
         if(i + 1 < argc) {
           if(strcmp(argv[i+1], "0") == 0) {
             counter = 0;
@@ -215,3 +221,4 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+

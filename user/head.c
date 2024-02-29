@@ -8,8 +8,6 @@ coinflip()
 {
   uint64 result = (timeframe() / 1000) % 10;
 
-  // printf("coin flip result: %d\n\n\n", result); // testing
-
   printf("⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n");
   printf("⣿⣿⣿⣿⣿⡿⢿⣿⣿⣿⣟⣛⣛⣛⣉⣉⣛⠛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n");
   printf("⣿⣿⣿⣟⡵⠞⠉⠀⢈⣿⣿⣿⠿⠟⠛⠛⠛⠻⡆⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿\n");
@@ -36,7 +34,7 @@ coinflip()
   printf("⣿⣿⣿⣿⡀⣀⣠⣴⣿⣿⣿⠁⣶⣿⣿⣿⠿⠛⣡⡋⠹⣿⣿⣿⣿⣿⣿⣿⣿\n");
   printf("⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣭⣥⣤⣶⣾⣿⣿⠀⣿⣿⣿⣿⣿⣿⣿⣿\n\n\n\n\n");
   sleep(10);
-  
+
   if (result < 4) {
     printf(" /$$                                 /$$           /$$\n");
     printf("| $$                                | $$          | $$\n");
@@ -81,7 +79,15 @@ int main(int argc, char *argv[]) {
 
     //check for flags
     for(int i=1; i < argc; i++) {
-      if(strcmp(argv[i], "-c") == 0) {
+      if(strcmp(argv[i], "-h") == 0) {
+        printf("Calling head returns the first 10 lines of the first file found in the input arguments. Adding flags as arguments will modify the output.\n\n");
+        printf("\tFlags:\n");
+        printf("\t\t-n [num]\tInstead of returning the first 10 lines, return the first num amount of lines. This flag must have a number after it (max 1,000).\n\n");
+        printf("\t\t-c [num]\tReturns the first num amount of bytes. This flag must have a number after it (max 10,000).\n\n");
+        printf("\t\t-v\t\tDisplays the file name before displaying all the lines or bytes.\n\n");
+        printf("\t\t-f\t\tFlips a coin that determines whether or not head will work or not. There is 40% chance for head to work properly.\n");
+        return 0;
+      } else if(strcmp(argv[i], "-c") == 0) {
         if(i + 1 < argc) {
           if(strcmp(argv[i+1], "0") == 0) {
             counter = 0;
@@ -144,7 +150,8 @@ int main(int argc, char *argv[]) {
             return 0;
         }
     }
-    
+
+    //look for a file to read and display its contents depending on arguments given
     for(int i=1; i < argc; i++) {
       int fd = open(argv[i], O_RDONLY);
 
