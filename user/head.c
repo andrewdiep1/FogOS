@@ -54,6 +54,7 @@ void display_usage() {
   printf("\t\tNOTE\t\tIt will take the last `-n` or `-c` that's given. So if you input `-n 3` and `-c 5`, it would disregard `-n 3` and take `-c 5`\n\n");
   printf("\t\t-v\t\tDisplays the file name before displaying all the lines or bytes.\n\n");
   printf("\t\t-f\t\tFlips a coin that determines whether or not head will work or not. There is 40% chance for head to work properly.\n");
+  exit(0);
 }
 
 // Function to parse command-line arguments
@@ -121,13 +122,12 @@ void display_file_contents(const char *filename, int verbose, int num, int count
   int fd = open(filename, O_RDONLY);
 
   if(fd >= 0) {
-    char *buf = 0;
-    uint sz = 0;
-
     if(verbose == 1) {
       printf("==> %s <==\n", filename);
     }
 
+    char *buf = 0;
+    uint sz = 0;
     if(num == 1 && counter > 0) { //for lines
       // printf("file: %s\n", filename);
 
@@ -160,7 +160,6 @@ void display_file_contents(const char *filename, int verbose, int num, int count
       *i = *i + 1;
     } else if(strcmp(filename, "-v") != 0 && strcmp(filename, "-f") != 0) {
       fprintf(2, "ERROR: %s is not a file\n", filename);
-      // exit(1);
     }
   }
 }
