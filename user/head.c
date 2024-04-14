@@ -51,6 +51,7 @@ void display_usage() {
   printf("\tFlags:\n");
   printf("\t\t-n [num]\tInstead of returning the first 10 lines, return the first num amount of lines. This flag must have a number after it (max 1,000).\n\n");
   printf("\t\t-c [num]\tReturns the first num amount of bytes. This flag must have a number after it (max 10,000).\n\n");
+  printf("\t\tNOTE\t\tIt will take the last `-n` or `-c` that's given. So if you input `-n 3` and `-c 5`, it would disregard `-n 3` and take `-c 5`\n\n");
   printf("\t\t-v\t\tDisplays the file name before displaying all the lines or bytes.\n\n");
   printf("\t\t-f\t\tFlips a coin that determines whether or not head will work or not. There is 40% chance for head to work properly.\n");
 }
@@ -154,13 +155,12 @@ void display_file_contents(const char *filename, int verbose, int num, int count
         }
       }
     }
-    exit(0);
   } else {
     if(strcmp(filename, "-c") == 0 || strcmp(filename, "-n") == 0) {
       *i = *i + 1;
     } else if(strcmp(filename, "-v") != 0 && strcmp(filename, "-f") != 0) {
       fprintf(2, "ERROR: %s is not a file\n", filename);
-      exit(1);
+      // exit(1);
     }
   }
 }
