@@ -5,24 +5,21 @@
 
 // Function prototypes
 void display_usage();
-void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip);
+void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip, int *file);
+void display_user_input(int num, int counter);
 void display_file_contents(const char *filename, int verbose, int num, int counter, int *i);
 int coinflip();
 
 int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    fprintf(2, "ERROR: No file provided\n");
-    exit(1);
-  }
-
   // Initialize variables
   int verbose = 0;
   int num = 1; // 1 = lines, 0 = bytes
   int flip = 0;
   int counter = -1; // Number of bytes or lines
+  int file = 0;
 
   // Parse command-line arguments
-  parse_arguments(argc, argv, &verbose, &num, &counter, &flip);
+  parse_arguments(argc, argv, &verbose, &num, &counter, &flip, &file);
   if (counter == -1) {
     counter = 10;
   }
@@ -36,6 +33,11 @@ int main(int argc, char *argv[]) {
       if (flipResult == 1) fprintf(2, "Try flipping again for heads!\n");
       return 0;
     }
+  }
+
+  if(file == 0) {
+    display_user_input(num, counter);
+    return 0;
   }
 
   // Look for a file to read and display its contents depending on arguments given
@@ -58,7 +60,7 @@ void display_usage() {
 }
 
 // Function to parse command-line arguments
-void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip) {
+void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip, int *file) {
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "-h") == 0) {
       // Display usage
@@ -112,7 +114,61 @@ void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counte
       *verbose = 1;
     } else if(strcmp(argv[i], "-f") == 0) {
       *flip = 1;
+    } else {
+      *file = 1;
     }
+  }
+}
+// Function to display user input based on specified flags
+void display_user_input(int num, int counter) {
+  char *buf = 0;
+  uint sz = 0;
+  char **lines = malloc(1000 * sizeof(char *));
+  int lineCount = 0;
+  int byteCount = 0;
+  int bytesRead = 0;
+  while (lineCount < 1000 && byteCount < 10000) {
+      bytesRead = getline(&buf, &sz, 0);
+      if (bytesRead <= 0) {
+          break;
+      }
+
+      byteCount += bytesRead;
+      lines[lineCount] = malloc(strlen(buf) + 1);
+      strcpy(lines[lineCount], buf);
+
+      lineCount++;
+  }
+
+  // For lines
+  if (num == 1 && counter > 0) {
+      if (counter > lineCount) {
+          counter = lineCount;
+      }
+      for (int i = lineCount - counter; i < lineCount; i++) {
+          printf("%s", lines[i]);
+          free(lines[i]);
+      }
+      free(lines);
+
+  // For bytes
+  } else if (counter > 0) {
+      if (byteCount >= 10000) {
+          byteCount = 10000;
+      }
+      if (counter > byteCount) {
+          counter = byteCount;
+      }
+      char line[10000];
+      line[counter--] = '\0';
+      for (int i = lineCount - 1; i >= 0 && counter >= 0; i--) {
+          for (int j = strlen(lines[i]) - 1; j >= 0 && counter >= 0; j--) {
+              line[counter--] = lines[i][j];
+          }
+          free(lines[i]);
+      }
+      free(lines);
+      printf("%s", line);
   }
 }
 
@@ -248,3 +304,4 @@ int coinflip() {
   printf("Oops! Looks like the coin got stuck in a quantum loop between heads and tails. Let's try flipping again and hope the universe makes up its mind this time!\n");
   return 0;
 }
+

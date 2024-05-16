@@ -5,29 +5,24 @@
 
 // Function prototypes
 void display_usage();
-void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip);
+void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip, int*file);
+void display_user_input(int num, int counter);
 void display_file_contents(const char *filename, int verbose, int num, int counter, int *i);
 int coinflip();
 
 int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    fprintf(2, "ERROR: No file provided\n");
-    exit(1);
-  }
-
   // Initialize variables
   int verbose = 0;
   int num = 1; // 1 = lines, 0 = bytes
   int flip = 0;
   int counter = -1; // Number of bytes or lines
+  int file = 0;
 
   // Parse command-line arguments
-  parse_arguments(argc, argv, &verbose, &num, &counter, &flip);
+  parse_arguments(argc, argv, &verbose, &num, &counter, &flip, &file);
   if (counter == -1) {
     counter = 10;
   }
-
-  // printf("argc: %d, verbose: %d, num: %d, counter: %d, flip: %d\n", argc, verbose, num, counter, flip);
 
   // Flip a coin if the -f flag is provided
   if (flip == 1) {
@@ -36,6 +31,11 @@ int main(int argc, char *argv[]) {
       if (flipResult == -1) fprintf(2, "Try flipping again for heads!\n");
       return 0;
     }
+  }
+
+  if(file == 0) {
+    display_user_input(num, counter);
+    return 0;
   }
 
   // Look for a file to read and display its contents depending on arguments given
@@ -58,7 +58,7 @@ void display_usage() {
 }
 
 // Function to parse command-line arguments
-void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip) {
+void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counter, int *flip, int *file) {
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "-h") == 0) {
       // Display usage
@@ -112,6 +112,39 @@ void parse_arguments(int argc, char *argv[], int *verbose, int *num, int *counte
       *verbose = 1;
     } else if(strcmp(argv[i], "-f") == 0) {
       *flip = 1;
+    } else {
+      *file = 1;
+    }
+  }
+}
+// Function to display user input based on specified flags
+void display_user_input(int num, int counter) {
+  char *buf = 0;
+  uint sz = 0;
+
+  if(num == 1 && counter > 0) { //for lines
+    for(int n = 0; n < counter; n++) {
+      if(getline(&buf, &sz, 0) <= 0) {
+        break;
+      }
+      printf("%s", buf);
+    }
+  } else if(counter > 0) { //for bytes
+    int bytes = 0;
+
+    while(counter > 0) {
+      int lineBytes = getline(&buf, &sz, 0);
+
+      bytes += lineBytes;
+
+      if(lineBytes <= 0) {
+        break;
+      }
+
+      for(int i=0; i < lineBytes && counter > 0 ; i++) {
+        counter--;
+        printf("%c", buf[i]);
+      }
     }
   }
 }
@@ -129,8 +162,6 @@ void display_file_contents(const char *filename, int verbose, int num, int count
     char *buf = 0;
     uint sz = 0;
     if(num == 1 && counter > 0) { //for lines
-      // printf("file: %s\n", filename);
-
       for(int n = 0; n < counter; n++) {
         if(getline(&buf, &sz, fd) <= 0) {
           break;
@@ -229,3 +260,4 @@ int coinflip() {
   printf("Oops! Looks like the coin got stuck in a quantum loop between heads and tails. Let's try flipping again and hope the universe makes up its mind this time!\n");
   return 0;
 }
+
